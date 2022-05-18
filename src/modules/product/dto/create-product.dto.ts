@@ -1,11 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsMongoId,
   IsNotEmpty,
   IsNumber,
   IsPositive,
   IsString,
   IsUrl,
+  ValidateNested,
 } from 'class-validator';
+import { CreateCategoryDto } from 'src/modules/category/dto/create-category.dto';
 
 export class CreateProductDto {
   @IsString()
@@ -30,4 +33,12 @@ export class CreateProductDto {
   @IsUrl()
   @IsNotEmpty()
   readonly image: string;
+
+  @ValidateNested()
+  @IsNotEmpty()
+  readonly category: CreateCategoryDto;
+
+  @IsNotEmpty()
+  @IsMongoId()
+  readonly brand: string;
 }

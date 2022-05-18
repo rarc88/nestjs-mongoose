@@ -13,13 +13,13 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    console.log(this.configService.get('database.name'));
+    console.log(this.configService.get('DATABASE_NAME'));
     console.log(this.apiConfig.database.name);
     return this.appService.getHello();
   }
 
   @Get('status')
-  getStatus(): string {
-    return 'OK';
+  getStatus() {
+    return { status: 'OK' };
   }
 }

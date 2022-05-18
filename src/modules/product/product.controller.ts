@@ -6,12 +6,14 @@ import {
   Patch,
   Param,
   Delete,
-  ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { MongoIdPipe } from 'src/common/pipes/mongo-id-pipe.pipe';
+import { FilterProductDto } from './dto/filter-product.dto';
 
 @ApiTags('products')
 @Controller({
@@ -22,31 +24,31 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
+  async create(@Body() createProductDto: CreateProductDto) {
+    return await this.productService.create(createProductDto);
   }
 
   @Get()
   @ApiOperation({ summary: 'Lista todos los productos' })
-  findAll() {
-    return this.productService.findAll();
+  async findAll(@Query() params: FilterProductDto) {
+    return await this.productService.findAll(params);
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.productService.findOne(+id);
+  async findOne(@Param('id', MongoIdPipe) id: string) {
+    return await this.productService.findOne(id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
+  async update(
+    @Param('id', MongoIdPipe) id: string,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    return this.productService.update(id, updateProductDto);
+    return await this.productService.update(id, updateProductDto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.productService.remove(id);
+  async remove(@Param('id', MongoIdPipe) id: string) {
+    return await this.productService.remove(id);
   }
 }
