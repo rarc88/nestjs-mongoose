@@ -1,4 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
+import apiConfig from './api-config';
 
 @Injectable()
-export class ApiConfigService {}
+export class APIConfigService {
+  constructor(
+    @Inject(apiConfig.KEY)
+    public env: ConfigType<typeof apiConfig>,
+  ) {}
+}

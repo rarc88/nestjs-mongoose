@@ -1,25 +1,19 @@
-import { Controller, Get, Inject } from '@nestjs/common';
-import { ConfigService, ConfigType } from '@nestjs/config';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import ApiConfig from './common/modules/api-config/api-config';
+import { Public } from './common/modules/auth/decorators/public.decorator';
 
+@Public()
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    private readonly configService: ConfigService,
-    @Inject(ApiConfig.KEY) private apiConfig: ConfigType<typeof ApiConfig>,
-  ) {}
+  constructor(private readonly appService: AppService) {}
 
   @Get()
   getHello(): string {
-    console.log(this.configService.get('DATABASE_NAME'));
-    console.log(this.apiConfig.database.name);
     return this.appService.getHello();
   }
 
   @Get('status')
-  getStatus() {
-    return { status: 'OK' };
+  getStatus(): string {
+    return this.appService.getStatus();
   }
 }

@@ -1,24 +1,21 @@
 import { Global, Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { APIConfigService } from '../api-config/api-config.service';
 
 @Global()
 @Module({
   imports: [
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: async (apiConfigService: APIConfigService) => ({
         useNewUrlParser: true,
         useUnifiedTopology: true,
         authMechanism: 'DEFAULT',
-        uri: `${configService.get('DATABASE_CONNECTION')}://${configService.get(
-          'DATABASE_HOST',
-        )}:${configService.get('DATABASE_PORT')}`,
-        user: configService.get('DATABASE_USER'),
-        pass: configService.get('DATABASE_PASS'),
-        dbName: configService.get('DATABASE_NAME'),
+        uri: `${apiConfigService.env.database.connection}://${apiConfigService.env.database.host}:${apiConfigService.env.database.port}`,
+        user: apiConfigService.env.database.user,
+        pass: apiConfigService.env.database.pass,
+        dbName: apiConfigService.env.database.name,
       }),
-      inject: [ConfigService],
+      inject: [APIConfigService],
     }),
   ],
   providers: [],

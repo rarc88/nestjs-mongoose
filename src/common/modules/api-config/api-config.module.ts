@@ -6,7 +6,7 @@ import { environments } from 'environments';
 import apiConfig from 'src/common/modules/api-config/api-config';
 import apiConfigSchema from 'src/common/modules/api-config/api-config.schema';
 
-import { ApiConfigService } from './api-config.service';
+import { APIConfigService } from './api-config.service';
 
 @Global()
 @Module({
@@ -19,6 +19,7 @@ import { ApiConfigService } from './api-config.service';
     }),
   ],
   controllers: [],
-  providers: [ApiConfigService],
+  providers: [APIConfigService],
+  exports: [APIConfigService],
 })
 export class APIConfigModule {}
